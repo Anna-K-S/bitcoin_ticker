@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
-import 'package:flutter/cupertino.dart';
+import 'android_dropdown.dart';
+import 'ios_picker.dart';
 import 'dart:io' show Platform;
 
 class PriceScreen extends StatefulWidget {
@@ -11,13 +12,16 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
-  late String _selectedCurrency;
+  late Currency _selectedCurrency;
+  final _firstCurrency = Currency.values.first;
+  final List<Currency> _currenciesList = Currency.values.toList();
 
   @override
   void initState() {
     super.initState();
+    // установка начального значения для выбранной валюты
     _selectedCurrency =
-        currenciesList[0]; // Установка начального значения для выбранной валюты
+        _firstCurrency; 
   }
 
   @override
@@ -42,7 +46,7 @@ class _PriceScreenState extends State<PriceScreen> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? $_selectedCurrency',
+                  '1 BTC = ? ${_selectedCurrency.name.toUpperCase()}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20.0,
@@ -57,58 +61,26 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: Platform.isIOS ? iosPicker() : androidDropdown(),
+            //проверка платформы
+            child: Platform.isIOS
+                ? IOSPicker(
+                    selectedCurrency: _selectedCurrency,
+                    onChanged: _onCurrencyChanged,
+                  )
+                : AndroidDropdown(
+                    selectedCurrency: _selectedCurrency,
+                    onChanged: _onCurrencyChanged,
+                  ),
           ),
         ],
       ),
     );
   }
 
-//для платформы android и др
-  DropdownButton<String> androidDropdown() {
-    //создание пустого списка,где будут элементы выпадающего списка 
-    List<DropdownMenuItem<String>> dropdownItems = [];
-    //используем цикл 'for...in'
-    for (String currency in currenciesList) {
-      final newItem = DropdownMenuItem<String>(
-        value: currency,
-        child: Text(currency),
-      );
-      dropdownItems.add(newItem);
-    }
-
-    return DropdownButton<String>(
-      value: _selectedCurrency,
-      items: dropdownItems,
-      onChanged: (value) {
-        setState(() {
-          //обновляет '_selectedCurrency ' при выборе новой валюты 
-          _selectedCurrency = value!;
-        });
-      },
-    );
+  void _onCurrencyChanged(Currency? newCurrency) {
+    setState(() {
+      //проверяем является ли 'newCurrency' null ом
+      _selectedCurrency = newCurrency ?? _selectedCurrency;
+    });
   }
-//для IOS
-  CupertinoPicker iosPicker() {
-    List<Text> pickerItems = [];
-    for (String currency in currenciesList) {
-      pickerItems.add(
-        Text(
-          currency,
-        ),
-      );
-    }
-//отображение выбора из списка элементов в стили ios
-    return CupertinoPicker(
-      itemExtent: 35.0,
-      onSelectedItemChanged: (selectedIndex) {
-        setState(() {
-          _selectedCurrency = currenciesList[selectedIndex];
-        });
-        
-      },
-      children: pickerItems,
-    );
-  }
-
 }

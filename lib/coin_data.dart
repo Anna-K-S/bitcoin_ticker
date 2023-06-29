@@ -1,31 +1,32 @@
-const List<String> currenciesList = [
-  'AUD',
-  'BRL',
-  'CAD',
-  'CNY',
-  'EUR',
-  'GBP',
-  'HKD',
-  'IDR',
-  'ILS',
-  'INR',
-  'JPY',
-  'MXN',
-  'NOK',
-  'NZD',
-  'PLN',
-  'RON',
-  'RUB',
-  'SEK',
-  'SGD',
-  'USD',
-  'ZAR'
-];
+enum Currency {
+  aud,
+  brl,
+  cad,
+  cny,
+  eur,
+  gbp,
+  hkd,
+  idr,
+  ils,
+  inr,
+  jpy,
+  mxn,
+  nok,
+  nzd,
+  pln,
+  ron,
+  rub,
+  sek,
+  sgd,
+  usd,
+  zar,
+}
 
-const List<String> cryptoList = [
-  'BTC',
-  'ETH',
-  'LTC',
-];
+enum Crypto {
+  btc,
+  eth,
+  ltc,
+}
+
 
 class CoinData {}
