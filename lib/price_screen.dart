@@ -1,3 +1,6 @@
+import 'package:bitcoin_ticker/crypto_card.dart';
+
+import 'api.dart';
 import 'package:flutter/material.dart';
 import 'coin_data.dart';
 import 'android_dropdown.dart';
@@ -13,15 +16,17 @@ class PriceScreen extends StatefulWidget {
 
 class _PriceScreenState extends State<PriceScreen> {
   late Currency _selectedCurrency;
+  final  _selectedCrypto = Crypto.values;
+  // final _crypto = Crypto.values;
   final _firstCurrency = Currency.values.first;
-  final List<Currency> _currenciesList = Currency.values.toList();
+  // final _api = CoinApi();
 
   @override
   void initState() {
     super.initState();
     // установка начального значения для выбранной валюты
-    _selectedCurrency =
-        _firstCurrency; 
+    _selectedCurrency = _firstCurrency;
+    // _selectedCrypto = _crypto as Crypto;
   }
 
   @override
@@ -34,26 +39,42 @@ class _PriceScreenState extends State<PriceScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              CryptoCard(
+                selectedCurrency: _selectedCurrency.name.toUpperCase(),
+                selectedCrypto: _selectedCrypto[0].name.toUpperCase(),
+              ),
+              CryptoCard(
+                selectedCurrency: _selectedCurrency.name.toUpperCase(),
+                selectedCrypto: _selectedCrypto[1].name.toUpperCase(),
+              ),
+              CryptoCard(
+                selectedCurrency: _selectedCurrency.name.toUpperCase(),
+                 selectedCrypto:_selectedCrypto[2].name.toUpperCase(), ),
+            ],
+          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
-            child: Card(
-              color: Colors.lightBlueAccent,
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = ? ${_selectedCurrency.name.toUpperCase()}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+            padding: const EdgeInsets.symmetric(
+                vertical: 15.0, horizontal: 28.0),
+            child: FutureBuilder(
+              // future: _api.getPrice(_selectedCrypto.name),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final price = snapshot.data;
+
+                  return Text(
+                    '1 ${_selectedCrypto} = ${price.toString()}  ${_selectedCurrency.name.toUpperCase()}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.white,
+                    ),
+                  );
+                }
+                return Text('error');
+              },
             ),
           ),
           Container(

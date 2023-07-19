@@ -27,6 +27,3 @@ enum Crypto {
   eth,
   ltc,
 }
-
-
-class CoinData {}
