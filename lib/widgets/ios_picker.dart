@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'coin_data.dart';
+import 'package:bitcoin_ticker/data/coin_data.dart';
+
 //виджет представляющий собой выбор валюты в ios ом стиле
 class IOSPicker extends StatelessWidget {
   final Currency selectedCurrency;

@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 class CryptoCard extends StatelessWidget {
   const CryptoCard({
     super.key, 
-    // required this.value,
     required this.selectedCurrency,
     required this.selectedCrypto
 
   });
 
-  // final String value;
+
   final String selectedCurrency;
   final String selectedCrypto;
 

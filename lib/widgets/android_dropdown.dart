@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'coin_data.dart';
+import '../data/coin_data.dart';
+
 //создаем виджет, который представляет собой выпадающий список валют для Android
 class AndroidDropdown extends StatelessWidget {
   final Currency selectedCurrency;
